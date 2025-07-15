@@ -1,162 +1,117 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IPL Score Predictor</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='ipl-favicon.ico') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/5f3f547070.js" crossorigin="anonymous"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body style="font-family: 'Open Sans', sans-serif; background-color: #f8f9fa;">
 
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title>Score Predictor</title>
-        <link rel="shortcut icon" href="{{ url_for('static', filename='ipl-favicon.ico') }}">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-        <script src="https://kit.fontawesome.com/5f3f547070.js" crossorigin="anonymous"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
-    </head>
+    <!-- Header -->
+    <div class="container text-center my-5">
+        <h2><span class="text-primary">First Innings Score Predictor</span> for <strong>IPL</strong></h2>
+        <p class="text-muted">An AI-powered WebApp to predict IPL first innings scores</p>
+    </div>
 
-    <body>
-
-        <!-- Website Title -->
-    	<div class="container">
-            <h2 class='container-heading'><span class='heading_first'>First Innings Score Predictor for </span><span class="heading_second">Indian Premier League (IPL)</span></h2>
-            <div class='description'>
-    			<p>A IPL Score Prediction WebApp</p>
-    		</div>
-    	</div>
-
-        <!-- Prediction Area -->
-        <div class="prediction-area">
-
-            <!-- IPL Banner - 1 -->
-            <div class='ipl-banner-left'>
-
-                <div class="slider-frame">
-                    <div class="slide-images-up">
-
-                        <!-- Image-1 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='mi.jpg') }}" alt="Mumbai Indians">
-                        </div>
-                        <!-- Image-2 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='srh.png') }}" alt="Sunrisers Hyderabad">
-                        </div>
-                        <!-- Image-3 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='rcb.png') }}" alt="Royal Challengers Bangalore">
-                        </div>
-                        <!-- Image-4 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='dc.png') }}" alt="Delhi Capitals">
-                        </div>
-                        <!-- Image-5 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='rr.png') }}" alt="Rajasthan Royals">
-                        </div>
-                        <!-- Image-6 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='kkr.jpg') }}" alt="Kolkata Knight Riders">
-                        </div>
-                        <!-- Image-7 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='kxip.png') }}" alt="Kings XI Punjab">
-                        </div>
-                        <!-- Image-8 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='csk.png') }}" alt="Chennai Super Kings">
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Prediction Form -->
-            <div class='div2'>
-                <form action="{{ url_for('predict') }}" method="POST">
-                    <!-- Batting Team Dropdown -->
-                    <select class="form-input align-center" name="batting-team">
-                        <option value="none">--- Select a Batting team ---</option>
-                        <option value="Mumbai Indians">Mumbai Indians</option>
-                        <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
-                        <option value="Chennai Super Kings">Chennai Super Kings</option>
-                        <option value="Rajasthan Royals">Rajasthan Royals</option>
-                        <option value="Kings XI Punjab">Kings XI Punjab</option>
-                        <option value="Royal Challengers Bangalore">Royal Challengers Bangalore</option>
-                        <option value="Delhi Daredevils">Delhi Daredevils</option>
-                        <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
-                    </select><br>
-                    <!-- Bowling Team Dropdown -->
-                    <select class="form-input align-center" name="bowling-team">
-                        <option value="none">--- Select a Bowling team ---</option>
-                        <option value="Mumbai Indians">Mumbai Indians</option>
-                        <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
-                        <option value="Chennai Super Kings">Chennai Super Kings</option>
-                        <option value="Rajasthan Royals">Rajasthan Royals</option>
-                        <option value="Kings XI Punjab">Kings XI Punjab</option>
-                        <option value="Royal Challengers Bangalore">Royal Challengers Bangalore</option>
-                        <option value="Delhi Daredevils">Delhi Daredevils</option>
-                        <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
-                    </select><br>
-                    <input class="form-input" type="text" name="overs" placeholder="Overs (>= 5.0) eg. 7.2"><br>
-                    <input class="form-input" type="text" name="runs" placeholder="Runs eg. 64"><br>
-                    <input class="form-input" type="text" name="wickets" placeholder="Wickets eg. 4"><br>
-                    <input class="form-input" type="text" name="runs_in_prev_5" placeholder="Runs scored in previous 5 Overs eg. 42"><br>
-                    <input class="form-input" type="text" name="wickets_in_prev_5" placeholder="Wickets taken in previous 5 Overs eg. 3"><br>
-
-			<input type="submit" class="myButton" value="Predict Score">
-        	</form>
-            </div>
-
-            <!-- IPL Banner - 2 -->
-            <div class='ipl-banner-right'>
-
-                <div class="slider-frame">
-                    <div class="slide-images-down">
-
-                        <!-- Image-1 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='mi.jpg') }}" alt="Mumbai Indians">
-                        </div>
-                        <!-- Image-2 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='srh.png') }}" alt="Sunrisers Hyderabad">
-                        </div>
-                        <!-- Image-3 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='rcb.png') }}" alt="Royal Challengers Bangalore">
-                        </div>
-                        <!-- Image-4 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='dc.png') }}" alt="Delhi Capitals">
-                        </div>
-                        <!-- Image-5 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='kkr.jpg') }}" alt="Kolkata Knight Riders">
-                        </div>
-                        <!-- Image-6 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='rr.png') }}" alt="Rajasthan Royals">
-                        </div>
-                        <!-- Image-7 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='kxip.png') }}" alt="Kings XI Punjab">
-                        </div>
-                        <!-- Image-8 -->
-                        <div class="image-container">
-                            <img class="image-width" src="{{ url_for('static', filename='csk.png') }}" alt="Chennai Super Kings">
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
+    <!-- Carousel of Teams -->
+    <div class="container mb-4">
+        <div class="d-flex flex-nowrap overflow-auto justify-content-center">
+            {% for team_logo in ['mi.jpg', 'srh.png', 'rcb.png', 'dc.png', 'rr.png', 'kkr.jpg', 'kxip.png', 'csk.png'] %}
+            <img src="{{ url_for('static', filename=team_logo) }}" alt="Team" class="mx-2" style="height: 80px; width: auto;">
+            {% endfor %}
         </div>
+    </div>
 
-        <!-- Footer -->
-       <div class='footer'>
-           <div class="contact">
-               <a target="_blank" href="https://github.com/DevloperHS/DeepLearning-Projects"><i class="fab fa-github fa-lg contact-icon"></i></a>
-           </div>
-           <p class='footer-description'>Score Prediction @2021.</p>
-           <p class='footer-description'>IPL SCORE PREDICTOR @2021.</p>
-       </div>
+    <!-- Prediction Card -->
+    <div class="container">
+        <div class="card shadow p-4">
+            <form action="{{ url_for('predict') }}" method="POST">
+                <div class="row g-3">
 
-    </body>
+                    <div class="col-md-6">
+                        <label for="batting-team" class="form-label">Batting Team</label>
+                        <select class="form-select" name="batting-team" required>
+                            <option value="none">Select Batting Team</option>
+                            <option>Mumbai Indians</option>
+                            <option>Kolkata Knight Riders</option>
+                            <option>Chennai Super Kings</option>
+                            <option>Rajasthan Royals</option>
+                            <option>Kings XI Punjab</option>
+                            <option>Royal Challengers Bangalore</option>
+                            <option>Delhi Daredevils</option>
+                            <option>Sunrisers Hyderabad</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="bowling-team" class="form-label">Bowling Team</label>
+                        <select class="form-select" name="bowling-team" required>
+                            <option value="none">Select Bowling Team</option>
+                            <option>Mumbai Indians</option>
+                            <option>Kolkata Knight Riders</option>
+                            <option>Chennai Super Kings</option>
+                            <option>Rajasthan Royals</option>
+                            <option>Kings XI Punjab</option>
+                            <option>Royal Challengers Bangalore</option>
+                            <option>Delhi Daredevils</option>
+                            <option>Sunrisers Hyderabad</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="overs" class="form-label">Overs</label>
+                        <input type="text" class="form-control" name="overs" placeholder="e.g. 7.2" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="runs" class="form-label">Runs</label>
+                        <input type="text" class="form-control" name="runs" placeholder="e.g. 64" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="wickets" class="form-label">Wickets</label>
+                        <input type="text" class="form-control" name="wickets" placeholder="e.g. 4" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="runs_in_prev_5" class="form-label">Runs in Last 5 Overs</label>
+                        <input type="text" class="form-control" name="runs_in_prev_5" placeholder="e.g. 42" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="wickets_in_prev_5" class="form-label">Wickets in Last 5 Overs</label>
+                        <input type="text" class="form-control" name="wickets_in_prev_5" placeholder="e.g. 3" required>
+                    </div>
+
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Predict Score</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-muted mt-5 mb-3">
+        <p>© 2021 IPL Score Predictor</p>
+        <a href="https://github.com/DevloperHS/DeepLearning-Projects" target="_blank">
+            <i class="fab fa-github fa-lg mx-1"></i>
+        </a>
+    </footer>
+
+</body>
 </html>
